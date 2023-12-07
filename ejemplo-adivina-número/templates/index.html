@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="texto">
+        <h1 >Welcome to the Great Number Game!</h1>
+        <p>I am thinking of a number between 1 and 100</p>
+    </div>
+
+    {% if 'numero_usuario' in session %}
+        {% if session['numero_usuario'] == session['numero_secreto'] %}
+            <div class="cuadrado-verde">
+                <h1>Adivinaste!</h1>
+                <h3>Lo lograste luego de  {{session['intentos']}} intentos</h3>
+                <a href="/reset_session">Jugar de nuevo</a>
+            </div>
+        {% elif session['numero_usuario'] > session['numero_secreto'] %}
+            <div>
+                <h1>Demasiado alto!</h1>
+            </div>
+        {% else %}
+            <div>
+                <h1>Demasiado bajo!</h1>
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+    {% if 'numero_secreto' in session and session['numero_usuario'] != session['numero_secreto'] %}
+        <form class="formulario" action="/procesar_numero_usuario" method="post">
+            <label for="numero">Adivina el número</label>
+            <input type="text" name="numero_usuario">
+            <button>Enviar</button>
+        </form>
+    {% endif %}
+</body>
+</html>
